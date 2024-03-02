@@ -1,4 +1,4 @@
 Flask
-Numpy
+numpy
 Pandas
-Scikit-learn
+scikit-learn
