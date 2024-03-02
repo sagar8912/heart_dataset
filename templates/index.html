@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction</title>
+    <style>
+        body {
+            background-image: url("/static/download (1).jpg");
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            color: #ffffff; /* Set text color to white for better visibility */
+        }
+        form {
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background for the form */
+            padding: 20px;
+            border-radius: 10px;
+            margin: auto;
+            width: 50%;
+            max-width: 500px;
+        }
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        label {
+            margin-top: 10px;
+        }
+        #predictionResult {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">Enter Patient Information</h2>
+    <form id="predictionForm">
+        <label for="age">Age (25-100):</label><br>
+        <input type="number" id="age" name="age" min="25" max="100"><br>
+        
+        <label for="sex">Sex:</label><br>
+        <select id="sex" name="sex">
+            <option value="0">Female</option>
+            <option value="1">Male</option>
+        </select><br>
+        
+        <label for="cp">Chest Pain Type:</label><br>
+        <select id="cp" name="cp">
+            <option value="0">Typical Angina</option>
+            <option value="1">Atypical Angina</option>
+            <option value="2">Non-Anginal Pain</option>
+            <option value="3">Asymptomatic</option>
+        </select><br>
+        
+        <label for="trestbps">Resting Blood Pressure (mm Hg, 90-200):</label><br>
+        <input type="number" id="trestbps" name="trestbps" min="90" max="200"><br>
+        
+        <label for="chol">Serum Cholesterol (mg/dL, 100-400):</label><br>
+        <input type="number" id="chol" name="chol" min="100" max="400"><br>
+        
+        <label for="fbs">Fasting Blood Sugar (> 120 mg/dL):</label><br>
+        <select id="fbs" name="fbs">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br>
+        
+        <label for="restecg">Resting Electrocardiographic Results:</label><br>
+        <select id="restecg" name="restecg">
+            <option value="0">Normal</option>
+            <option value="1">ST-T Wave Abnormality</option>
+            <option value="2">Left Ventricular Hypertrophy</option>
+        </select><br>
+        
+        <label for="thalach">Maximum Heart Rate Achieved (50-200):</label><br>
+        <input type="number" id="thalach" name="thalach" min="50" max="200"><br>
+        
+        <label for="exang">Exercise Induced Angina:</label><br>
+        <select id="exang" name="exang">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br>
+        
+        <label for="oldpeak">ST Depression Induced by Exercise Relative to Rest:</label><br>
+        <input type="number" id="oldpeak" name="oldpeak" step="0.01" min="0" max="10"><br>
+        
+        <label for="slope">Slope of the Peak Exercise ST Segment:</label><br>
+        <select id="slope" name="slope">
+            <option value="0">Upsloping</option>
+            <option value="1">Flat</option>
+            <option value="2">Downsloping</option>
+        </select><br>
+        
+        <label for="ca">Number of Major Vessels (0-3) Colored by Flourosopy:</label><br>
+        <input type="number" id="ca" name="ca" min="0" max="3"><br>
+        
+        <label for="thal">Thalassemia:</label><br>
+        <select id="thal" name="thal">
+            <option value="0">Normal</option>
+            <option value="1">Fixed Defect</option>
+            <option value="2">Reversible Defect</option>
+        </select><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+    <div id="predictionResult"></div>
+
+    <script>
+        document.getElementById("predictionForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+            var form = this;
+            var formData = new FormData(form); // Get form data
+            var xhr = new XMLHttpRequest(); // Create a new XMLHttpRequest object
+            xhr.open("POST", "/predict"); // Set up a POST request to the server
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // If the request is successful, update the page with the prediction result
+                    document.getElementById("predictionResult").innerHTML = xhr.responseText;
+                } else {
+                    // If there was an error, display an error message
+                    document.getElementById("predictionResult").innerHTML = "Error: " + xhr.statusText;
+                }
+            };
+            xhr.onerror = function() {
+                // If there was a network error, display an error message
+                document.getElementById("predictionResult").innerHTML = "Network Error";
+            };
+            xhr.send(formData); // Send the form data to the server
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
